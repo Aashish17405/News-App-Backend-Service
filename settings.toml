@@ -1,0 +1,14 @@
+[default]
+app_name = "NEWS-APP-BACKEND"
+version = "1.0.0"
+debug = false
+
+[development]
+debug = true
+host = "0.0.0.0"
+port = 8000
+
+[production]
+debug = false
+host = "0.0.0.0"
+port = 8000
