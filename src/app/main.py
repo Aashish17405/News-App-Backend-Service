@@ -6,12 +6,6 @@ from contextlib import asynccontextmanager
 import time
 from .config import settings
 from .logger import logger
-from .metrics import (
-    setup_metrics,
-    http_requests_total,
-    http_request_duration_seconds,
-    errors_total,
-)
 
 
 # Lifespan event handler (replaces on_event)
@@ -63,9 +57,6 @@ app = FastAPI(
     lifespan=lifespan,  # Pass lifespan handler here
 )
 
-# Setup Prometheus metrics
-setup_metrics(app)
-
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
@@ -76,10 +67,10 @@ app.add_middleware(
 )
 
 
-# Middleware for request logging and metrics
+# Middleware for request logging
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
-    """Log all HTTP requests and record metrics"""
+    """Log all HTTP requests"""
     start_time = time.time()
     
     # Log request
@@ -110,27 +101,10 @@ async def log_requests(request: Request, call_next):
             },
             exc_info=True,
         )
-        # Record error metric
-        errors_total.labels(
-            error_type=type(e).__name__,
-            endpoint=request.url.path
-        ).inc()
         raise
     
     # Calculate duration
     duration = time.time() - start_time
-    
-    # Record metrics
-    http_requests_total.labels(
-        method=request.method,
-        endpoint=request.url.path,
-        status_code=status_code
-    ).inc()
-    
-    http_request_duration_seconds.labels(
-        method=request.method,
-        endpoint=request.url.path
-    ).observe(duration)
     
     # Log response
     logger.info(
@@ -162,12 +136,6 @@ async def global_exception_handler(request: Request, exc: Exception):
         },
         exc_info=True,
     )
-    
-    # Record error metric
-    errors_total.labels(
-        error_type=type(exc).__name__,
-        endpoint=request.url.path
-    ).inc()
     
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
