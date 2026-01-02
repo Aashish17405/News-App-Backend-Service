@@ -5,8 +5,13 @@ description = "News App Backend API"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "alembic>=1.17.2",
     "dynaconf>=3.2.12",
     "fastapi>=0.127.1",
+    "psycopg2-binary>=2.9.11",
+    "pydantic>=2.12.5",
+    "python-dotenv>=1.2.1",
+    "sqlalchemy>=2.0.45",
     "uvicorn[standard]>=0.40.0",
 ]
 

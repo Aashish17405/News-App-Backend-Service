@@ -5,12 +5,20 @@ debug = false
 log_level = "INFO"
 cors_origins = ["*"]
 
+# Database settings
+database_echo = false
+database_pool_size = 5
+database_max_overflow = 10
+
 [development]
 debug = true
 host = "0.0.0.0"
 port = 8000
 log_level = "DEBUG"
 cors_origins = ["http://localhost:3000", "http://localhost:5173"]
+
+# Database settings for development
+database_echo = true  # Log SQL queries in development
 
 [production]
 debug = false

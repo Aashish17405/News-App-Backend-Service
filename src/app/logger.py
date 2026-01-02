@@ -4,7 +4,6 @@ from pathlib import Path
 from logging.handlers import RotatingFileHandler
 from .config import settings
 
-
 def setup_logger(name: str = "app") -> logging.Logger:
     """
     Setup application logger with console and file handlers.
