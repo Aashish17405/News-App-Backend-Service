@@ -21,6 +21,7 @@ __all__ = [
     "News", 
     "NewsMedia", 
     "NewsModeration", 
+    "NewsModeration", 
     "UserEngagement", 
     "AuditLog"
 ]

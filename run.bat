@@ -1,3 +1,4 @@
 @echo off
 set ENV_FOR_DYNACONF=development
-uv run uvicorn src.app.main:app --reload --host 0.0.0.0 --port 8000
+rem Use 'uv' to run the module inside the project's virtualenv
+uv run python -m src.app.main --reload

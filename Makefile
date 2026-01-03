@@ -64,3 +64,17 @@ run:
 # Run in production mode
 prod:
 	export ENV_FOR_DYNACONF=production && uv run uvicorn src.app.main:app --host 0.0.0.0 --port 8000
+
+# Database / Alembic helpers
+db-init:
+	@echo "Ensure DATABASE_URL is set (see settings.toml or .env)."
+	@echo "Example (Postgres POSIX): export DATABASE_URL=postgresql://user:pass@localhost:5432/dbname"
+	@echo "Example (PowerShell): $env:DATABASE_URL = 'postgresql://user:pass@localhost:5432/dbname'"
+	@echo "Then run: make db-upgrade"
+
+db-upgrade:
+	uv run alembic upgrade head
+
+db-revision:
+	# Create a new autogenerate revision; supply MESSAGE env var or edit the -m text
+	uv run alembic revision --autogenerate -m "${MESSAGE:-autogen}"

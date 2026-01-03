@@ -8,7 +8,7 @@ from typing import Generator
 from .config import settings
 
 # Get DATABASE_URL from config (which loads from .env)
-db_url = settings.get("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/newsapp")
+db_url = settings.get("DATABASE_URL", "postgresql://postgres:aashish@localhost:5432/news_app_db")
 
 # Create the SQLAlchemy engine
 engine = create_engine(

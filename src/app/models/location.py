@@ -1,9 +1,12 @@
-from sqlalchemy import Column, String, JSON, text
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, String, JSON, text, UniqueConstraint
+from sqlalchemy.dialects.postgresql import UUID, JSONB
 from .base import Base
 
 class Location(Base):
     __tablename__ = "locations"
+    __table_args__ = (
+        UniqueConstraint('state', 'district', 'mandal_or_village', name='uq_location'),
+    )
     
     id = Column(
         UUID(as_uuid=True), 
@@ -15,4 +18,4 @@ class Location(Base):
     district = Column(String(100))
     mandal_or_village = Column(String(200))
     postal_code = Column(String(20))
-    geo = Column(JSON) # Stores coordinates or extra data as JSON
+    geo = Column(JSONB) # Stores coordinates or extra data as JSON

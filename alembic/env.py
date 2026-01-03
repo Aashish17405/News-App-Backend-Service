@@ -18,13 +18,14 @@ from app.models import User  # Import all your models
 # access to the values within the .ini file in use.
 config = context.config
 
-# Get database URL from environment variable
-# This allows us to use the DATABASE_URL from .env
-from dotenv import load_dotenv
-load_dotenv()
-database_url = os.getenv("DATABASE_URL")
-if database_url:
-    config.set_main_option("sqlalchemy.url", database_url)
+# Get database URL from app config (which handles dynaconf + .env)
+from app.config import settings
+from app.database import db_url
+
+if db_url:
+    config.set_main_option("sqlalchemy.url", db_url)
+else:
+    raise RuntimeError("DATABASE_URL not configured. Please set it in .secrets.toml or environment variables.")
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
