@@ -1,5 +1,5 @@
 [default]
-app_name = "My FastAPI Application"
+app_name = "News App Backend Service"
 version = "1.0.0"
 debug = false
 log_level = "INFO"
@@ -25,4 +25,4 @@ debug = false
 host = "0.0.0.0"
 port = 8000
 log_level = "INFO"
-cors_origins = ["https://yourdomain.com"]
+cors_origins = ["https://newsapp.com"]

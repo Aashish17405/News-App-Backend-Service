@@ -22,6 +22,7 @@ async def create_user(user_data: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Username or Mobile already exists")
 
     db_user = UserModel(**user_data.model_dump())
+    db_user.role = "user"  # Default role
     db.add(db_user)
     db.commit()
     db.refresh(db_user)

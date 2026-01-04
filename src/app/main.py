@@ -7,7 +7,8 @@ from .logger import logger
 from .database import engine
 import sqlalchemy as sa
 from .models import Base
-from .routes import api_router
+from .routes import api_router, auth
+from .services.rbac_service import init_rbac
 import logging
 import subprocess
 import uvicorn
@@ -16,6 +17,8 @@ import uvicorn
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Database initialization is handled in main() before startup to ensure proper order with Alembic
+    # Initialize RBAC (ensure adapter is ready)
+    init_rbac()
     yield
 
 # Main FastAPI App
@@ -36,6 +39,7 @@ app.add_middleware(
 
 # Include all our Routes (the URL endpoints)
 app.include_router(api_router)
+app.include_router(auth.router)
 
 # Welcome Message
 @app.get("/")
@@ -64,8 +68,8 @@ def init_db():
             logger.warning(f"pgvector extension not available: {e}")
             logger.warning("Embeddings will use JSONB storage instead of VECTOR type.")
 
-    Base.metadata.create_all(bind=engine)
-    logger.info("Database tables verified/created successfully!")
+    # Base.metadata.create_all(bind=engine)
+    logger.info("Database extensions checked!")
 
 def main():
     """Run the app"""
